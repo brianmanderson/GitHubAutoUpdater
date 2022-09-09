@@ -11,7 +11,7 @@ namespace GitHubUpdate
 {
     public class Program
     {
-        static void run_git_add(string path)
+        static void run_git_command(string path, string command)
         {
             Process cmdProcess = new Process();
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
@@ -23,41 +23,20 @@ namespace GitHubUpdate
             cmdProcess.StartInfo = processStartInfo;
             cmdProcess.Start();
             StreamWriter writer = cmdProcess.StandardInput;
-            writer.WriteLine("git add .");
-            writer.WriteLine("git commit -m 'update'");
-            writer.WriteLine("git push");
-
-            cmdProcess.WaitForExit();
-            Process p = new Process{
-                StartInfo = 
-                {
-                    FileName =  "C:\\Windows\\System32\\cmd.exe",
-                    WorkingDirectory = path,
-                    Arguments = "git add .",
-                    UseShellExecute = true
-                }
-            };
-            p.Start();
-            p.StartInfo.WorkingDirectory = path;
-            p.StartInfo.FileName = "C:\\Windows\\System32\\cmd.exe";
-            p.StartInfo.Arguments = "git add .";
-            p.StartInfo.UseShellExecute = false;
-            p.Start();
-            p.StartInfo.Arguments = "git commit -m 'Evening auto-push'";
-            p.Start();
-            p.StartInfo.Arguments = "git push";
-            p.Start();
+            writer.WriteLine(command);
+            cmdProcess.Dispose();
         }
         static void Main(string[] args)
         {
             string file_path = @".\Paths.txt";
-            int hour = 16;
+            int evening_hour = 16;
+            int morning_hour = 18;
             bool ran_evening = false;
             bool ran_morning = false;
             bool run_evening = false;
             bool run_morning = false;
             DateTime now = DateTime.Now;
-            if (now.Hour < hour)
+            if (now.Hour < evening_hour)
             {
                 run_evening = true;
             }
@@ -67,7 +46,7 @@ namespace GitHubUpdate
                 while (true)
                 {
                     now = DateTime.Now;
-                    if (now.Hour >= hour)
+                    if (now.Hour >= evening_hour)
                     {
                         if (!ran_evening)
                         {
@@ -79,10 +58,40 @@ namespace GitHubUpdate
                                 }
                                 foreach (string p in Directory.EnumerateDirectories(path))
                                 {
-                                    run_git_add(@"C:\\Users\\b5anderson\\Modular_Projects\\GitHubUpdater\\");
+                                    if (Directory.Exists(Path.Combine(p, ".git")))
+                                    {
+                                        run_git_command(@"C:\\Users\\b5anderson\\Modular_Projects\\GitHubUpdater\\", "git add .");
+                                        run_git_command(@"C:\\Users\\b5anderson\\Modular_Projects\\GitHubUpdater\\", $"git commit -m 'evening_update'");
+                                        run_git_command(@"C:\\Users\\b5anderson\\Modular_Projects\\GitHubUpdater\\", "git push");
+                                        break;
+                                    }
                                 }
                             }
                             ran_evening = true;
+                            ran_morning = false;
+                        }
+                    }
+                    if (now.Hour <= morning_hour)
+                    {
+                        if (!ran_morning)
+                        {
+                            foreach (string path in paths)
+                            {
+                                if (!Directory.Exists(path))
+                                {
+                                    continue;
+                                }
+                                foreach (string p in Directory.EnumerateDirectories(path))
+                                {
+                                    if (Directory.Exists(Path.Combine(p, ".git")))
+                                    {
+                                        run_git_command(@"C:\\Users\\b5anderson\\Modular_Projects\\GitHubUpdater\\", "git pull");
+                                        break;
+                                    }
+                                }
+                            }
+                            ran_evening = false;
+                            ran_morning = true;
                         }
                     }
 
