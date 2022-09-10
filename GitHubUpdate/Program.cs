@@ -30,16 +30,10 @@ namespace GitHubUpdate
         {
             string file_path = @".\Paths.txt";
             int evening_hour = 16;
-            int morning_hour = 18;
+            int morning_hour = 1;
             bool ran_evening = false;
             bool ran_morning = false;
-            bool run_evening = false;
-            bool run_morning = false;
             DateTime now = DateTime.Now;
-            if (now.Hour < evening_hour)
-            {
-                run_evening = true;
-            }
             if (File.Exists(file_path))
             {
                 List<string> paths = File.ReadAllLines(file_path).ToList();
@@ -84,7 +78,7 @@ namespace GitHubUpdate
                                 {
                                     if (Directory.Exists(Path.Combine(p, ".git")))
                                     {
-                                        run_git_command(@"C:\\Users\\b5anderson\\Modular_Projects\\GitHubUpdater\\", "git pull");
+                                        run_git_command(p, "git pull");
                                     }
                                 }
                             }
@@ -94,12 +88,6 @@ namespace GitHubUpdate
                     }
 
                     Thread.Sleep(10000);
-
-                    if (now.Hour > 20)
-                        if (!ran_evening)
-                        {
-
-                        }
                 }
             }
         }
