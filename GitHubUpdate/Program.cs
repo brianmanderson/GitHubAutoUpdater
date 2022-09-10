@@ -60,10 +60,9 @@ namespace GitHubUpdate
                                 {
                                     if (Directory.Exists(Path.Combine(p, ".git")))
                                     {
-                                        run_git_command(@"C:\\Users\\b5anderson\\Modular_Projects\\GitHubUpdater\\", "git add .");
-                                        run_git_command(@"C:\\Users\\b5anderson\\Modular_Projects\\GitHubUpdater\\", $"git commit -m 'evening_update'");
-                                        run_git_command(@"C:\\Users\\b5anderson\\Modular_Projects\\GitHubUpdater\\", "git push");
-                                        break;
+                                        run_git_command(p, "git add .");
+                                        run_git_command(p, $"git commit -m 'evening_update'");
+                                        run_git_command(p, "git push");
                                     }
                                 }
                             }
@@ -86,7 +85,6 @@ namespace GitHubUpdate
                                     if (Directory.Exists(Path.Combine(p, ".git")))
                                     {
                                         run_git_command(@"C:\\Users\\b5anderson\\Modular_Projects\\GitHubUpdater\\", "git pull");
-                                        break;
                                     }
                                 }
                             }
