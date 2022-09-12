@@ -29,7 +29,7 @@ namespace GitHubUpdate
         static void Main(string[] args)
         {
             string file_path = @".\Paths.txt";
-            int evening_hour = 16;
+            int evening_hour = 23;
             int morning_hour = 1;
             bool ran_evening = false;
             bool ran_morning = false;
