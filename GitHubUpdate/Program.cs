@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using GitHubUpdate.Services;
 
 namespace GitHubUpdate
 {
@@ -31,65 +32,11 @@ namespace GitHubUpdate
             string file_path = @".\Paths.txt";
             int evening_hour = 23;
             int morning_hour = 1;
-            bool ran_evening = false;
-            bool ran_morning = false;
-            DateTime now = DateTime.Now;
-            if (File.Exists(file_path))
-            {
-                List<string> paths = File.ReadAllLines(file_path).ToList();
-                while (true)
-                {
-                    now = DateTime.Now;
-                    if (now.Hour >= evening_hour)
-                    {
-                        if (!ran_evening)
-                        {
-                            foreach (string path in paths)
-                            {
-                                if (!Directory.Exists(path))
-                                {
-                                    continue;
-                                }
-                                foreach (string p in Directory.EnumerateDirectories(path))
-                                {
-                                    if (Directory.Exists(Path.Combine(p, ".git")))
-                                    {
-                                        run_git_command(p, "git add .");
-                                        run_git_command(p, $"git commit -m 'evening_update'");
-                                        run_git_command(p, "git push");
-                                    }
-                                }
-                            }
-                            ran_evening = true;
-                            ran_morning = false;
-                        }
-                    }
-                    if (now.Hour <= morning_hour)
-                    {
-                        if (!ran_morning)
-                        {
-                            foreach (string path in paths)
-                            {
-                                if (!Directory.Exists(path))
-                                {
-                                    continue;
-                                }
-                                foreach (string p in Directory.EnumerateDirectories(path))
-                                {
-                                    if (Directory.Exists(Path.Combine(p, ".git")))
-                                    {
-                                        run_git_command(p, "git pull");
-                                    }
-                                }
-                            }
-                            ran_evening = false;
-                            ran_morning = true;
-                        }
-                    }
-
-                    Thread.Sleep(10000);
-                }
-            }
+            GitHubUpdateClass runner = new GitHubUpdateClass();
+            runner.set_evening_hour(9);
+            runner.set_morning_hour(11);
+            runner.set_file(file_path);
+            runner.run();
         }
     }
 }
