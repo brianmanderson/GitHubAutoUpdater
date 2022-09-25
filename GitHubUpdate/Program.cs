@@ -33,8 +33,8 @@ namespace GitHubUpdate
             int evening_hour = 23;
             int morning_hour = 1;
             GitHubUpdateClass runner = new GitHubUpdateClass();
-            runner.set_evening_hour(9);
-            runner.set_morning_hour(11);
+            runner.set_evening_hour(evening_hour);
+            runner.set_morning_hour(morning_hour);
             runner.set_file(file_path);
             runner.run();
         }
