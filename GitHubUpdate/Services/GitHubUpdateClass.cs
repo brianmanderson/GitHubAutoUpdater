@@ -71,7 +71,7 @@ namespace GitHubUpdate.Services
                 while (true)
                 {
                     now = DateTime.Now;
-                    if (now.Hour >= evening_hour)
+                    if (now.Hour >= evening_hour | true)
                     {
                         if (!ran_evening)
                         {
@@ -106,7 +106,7 @@ namespace GitHubUpdate.Services
                             ran_morning = false;
                         }
                     }
-                    if (now.Hour <= morning_hour)
+                    if (now.Hour <= morning_hour | true)
                     {
                         if (!ran_morning)
                         {
@@ -130,7 +130,7 @@ namespace GitHubUpdate.Services
                         }
                     }
 
-                    Thread.Sleep(60 * 60 * 1000); // 60 seconds * 60 minutes in an hour * 1000 milliseconds
+                    Thread.Sleep(60 * 55 * 1000); // 60 seconds * 60 minutes in an hour * 1000 milliseconds
                 }
             }
         }
